@@ -5,6 +5,8 @@
 #include "order.h"
 #include <string>
 #include <ctime>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 Order::Order(Side side, double price, long quantity) {
@@ -15,11 +17,13 @@ Order::Order(Side side, double price, long quantity) {
 }
 
 string Order::stringify() const {
+  std::ostringstream stream;
   string side_str = this->side == BUY ? "BUY" : "SELL";
+  stream << std::fixed << std::setprecision(2) << this->price;
   return side_str
     + " "
     + to_string(this->quantity)
-    + " @ " + to_string(this->price);
+    + " @ " + stream.str();
 }
 
 void Order::set_quantity(long q) {
