@@ -9,16 +9,16 @@
 #include <iomanip>
 
 using namespace std;
-Order::Order(Side side, double price, long quantity) {
+order::order(enum side side, double price, long quantity) {
   this->side = side;
   this->price = price;
   this->quantity = quantity;
   this->timestamp = time(nullptr);
 }
 
-string Order::stringify() const {
+string order::stringify() const {
   std::ostringstream stream;
-  string side_str = this->side == BUY ? "BUY" : "SELL";
+  string side_str = is_buy() ? "BUY" : "SELL";
   stream << std::fixed << std::setprecision(2) << this->price;
   return side_str
     + " "
@@ -26,11 +26,11 @@ string Order::stringify() const {
     + " @ " + stream.str();
 }
 
-void Order::set_quantity(long q) {
+void order::set_quantity(long q) {
   this->quantity = q;
 }
 
-void Order::subtract_quantity(long *trade_amount) {
+void order::subtract_quantity(long *trade_amount) {
   if (this->quantity < *trade_amount) {
     this->quantity = 0;
     *trade_amount -= this->quantity;

@@ -10,26 +10,30 @@
 
 using namespace std;
 
-enum Side {
+enum side {
   BUY,
   SELL
 };
 
-class Order {
+class order {
   public:
-    Order(Side side, double price, long quantity);
-    [[nodiscard]] string stringify() const;
+    order(side side, double price, long quantity);
+    string stringify() const;
 
-    [[nodiscard]] Side get_side() const { return side; }
-    [[nodiscard]] double get_price() const { return price; }
-    [[nodiscard]] long get_quantity() const { return quantity; }
-    [[nodiscard]] time_t get_timestamp() const { return timestamp; }
+    side get_side() const { return side; }
+    double get_price() const { return price; }
+    long get_quantity() const { return quantity; }
+    time_t get_timestamp() const { return timestamp; }
+
+    bool is_buy() const { return side == BUY; }
+    bool is_sell() const { return side == SELL; }
 
     void set_quantity(long quantity);
     void subtract_quantity(long *trade_amount);
 
+
   private:
-    Side side;
+    side side;
     double price;
     long quantity;
     time_t timestamp;
