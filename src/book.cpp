@@ -44,7 +44,6 @@ void book::execute_buy(order *buy_order) {
   if (quantity > 0) {
     // creating and push a standing order
     buy_order->set_quantity(quantity);
-    buy_queue->add(*buy_order);
     execute_buy(buy_order);
   }
 }
@@ -63,7 +62,6 @@ void book::execute_sell(order *sell_order) {
   long quantity = sell_order->get_quantity();
   best_buy.subtract_quantity(&quantity);
 
-
   if (best_buy.get_quantity() != 0) {
     buy_queue->add(best_buy);
   }
@@ -71,7 +69,6 @@ void book::execute_sell(order *sell_order) {
   if (quantity > 0) {
     // creating and push a standing order
     sell_order->set_quantity(quantity);
-    sell_queue->add(*sell_order);
     execute_sell(sell_order);
   }
 }

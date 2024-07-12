@@ -29,7 +29,7 @@ int main() {
     string side_str;
     double price;
     long quantity;
-    cin >> side_str >> price >> quantity;
+    cin >> side_str >> quantity >> price;
     if (side_str == "exit") {
       break;
     }
