@@ -17,18 +17,29 @@ class order_queue {
     bool is_empty() const { return pq.empty(); }
     order peek() const { return pq.top(); }
 
-    order pop();
+    void pop();
     void add(order& order);
+
+    void show();
 
   private:
     side side;
 
     struct compare {
+      enum side comparison_side;
+      explicit compare(enum side comparison_side) : comparison_side(comparison_side) {}
       bool operator()(const order& lhs, const order& rhs) const {
-        if (lhs.get_price() == rhs.get_price()) {
-          return lhs.get_timestamp() > rhs.get_timestamp();
+        if (comparison_side == BUY) {
+          if (lhs.get_price() == rhs.get_price()) {
+            return lhs.get_timestamp() > rhs.get_timestamp();
+          }
+          return lhs.get_price() < rhs.get_price();
+        } else {
+          if (lhs.get_price() == rhs.get_price()) {
+            return lhs.get_timestamp() > rhs.get_timestamp();
+          }
+          return lhs.get_price() > rhs.get_price();
         }
-        return lhs.get_price() < rhs.get_price();
       }
     };
 

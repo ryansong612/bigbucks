@@ -2,3 +2,9 @@
 build
 lib
 cmake-build-debug
+CMakeFiles
+.ninja_deps
+.ninja_log
+build.ninja
+CMakeCache.txt
+.cmake

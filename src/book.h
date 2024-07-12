@@ -16,12 +16,16 @@ class book {
     book(string index);
     string index;
     void execute(order *order);
+
+    void show();
+
   private:
     order_queue *buy_queue;
     order_queue *sell_queue;
 
     void execute_buy(order *order);
     void execute_sell(order *order);
+
 };
 
 

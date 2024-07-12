@@ -5,6 +5,7 @@
 #include "book.h"
 
 #include <utility>
+#include <iostream>
 
 using namespace std;
 
@@ -44,7 +45,43 @@ void book::execute_buy(order *buy_order) {
     // creating and push a standing order
     buy_order->set_quantity(quantity);
     buy_queue->add(*buy_order);
+    execute_buy(buy_order);
   }
 }
 
-void book::execute_sell(order *order) {}
+void book::execute_sell(order *sell_order) {
+  // we can assert here that the order is sell sided
+  if (buy_queue->is_empty()) {
+    // no trades can occur, sell order becomes standing
+    sell_queue->add(*sell_order);
+    return;
+  }
+
+  // we have buy orders to trade with
+  order best_buy = buy_queue->peek();
+  long quantity = sell_order->get_quantity();
+  best_buy.subtract_quantity(&quantity);
+
+
+  if (best_buy.get_quantity() == 0) {
+    // cancel this empty buy order that has been fulfilled
+    buy_queue->pop();
+  }
+
+  if (quantity > 0) {
+    // creating and push a standing order
+    sell_order->set_quantity(quantity);
+    sell_queue->add(*sell_order);
+    execute_sell(sell_order);
+  }
+}
+
+void book::show() {
+  cout << "------------------------------------------------" << endl;
+  cout << "Index: " << this->index << endl;
+  cout << "Buy Queue:" << endl;
+  buy_queue->show();
+  cout << "Sell Queue:" << endl;
+  sell_queue->show();
+  cout << "------------------------------------------------" << endl;
+}

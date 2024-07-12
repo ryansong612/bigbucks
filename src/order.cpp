@@ -7,6 +7,7 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 using namespace std;
 order::order(enum side side, double price, long quantity) {
@@ -23,7 +24,7 @@ string order::stringify() const {
   return side_str
     + " "
     + to_string(this->quantity)
-    + " @ " + stream.str();
+    + " @ $" + stream.str();
 }
 
 void order::set_quantity(long q) {
@@ -36,6 +37,7 @@ void order::subtract_quantity(long *trade_amount) {
     *trade_amount -= this->quantity;
   } else {
     this->quantity -= *trade_amount;
+    *trade_amount = 0;
   }
 }
 
