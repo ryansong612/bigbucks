@@ -33,12 +33,12 @@ void book::execute_buy(order *buy_order) {
 
   // we have sell orders to trade with
   order best_sell = sell_queue->peek();
+  sell_queue->pop();
   long quantity = buy_order->get_quantity();
   best_sell.subtract_quantity(&quantity);
 
-  if (best_sell.get_quantity() == 0) {
-    // cancel this empty sell order that has been fulfilled
-    sell_queue->pop();
+  if (best_sell.get_quantity() != 0) {
+    sell_queue->add(best_sell);
   }
 
   if (quantity > 0) {
@@ -59,13 +59,13 @@ void book::execute_sell(order *sell_order) {
 
   // we have buy orders to trade with
   order best_buy = buy_queue->peek();
+  buy_queue->pop();
   long quantity = sell_order->get_quantity();
   best_buy.subtract_quantity(&quantity);
 
 
-  if (best_buy.get_quantity() == 0) {
-    // cancel this empty buy order that has been fulfilled
-    buy_queue->pop();
+  if (best_buy.get_quantity() != 0) {
+    buy_queue->add(best_buy);
   }
 
   if (quantity > 0) {
