@@ -1,3 +1,0 @@
-C:/Users/S/Desktop/Personal/bigbucks/CMakeFiles/bigbucks.dir
-C:/Users/S/Desktop/Personal/bigbucks/CMakeFiles/edit_cache.dir
-C:/Users/S/Desktop/Personal/bigbucks/CMakeFiles/rebuild_cache.dir
