@@ -1,5 +1,5 @@
 //
-// Created by Ryan Song on 04/07/2024.
+// Created by Ryan Song and Kushagra Srivastava
 //
 
 #include "book.h"
@@ -18,58 +18,84 @@ book::book(string index) {
 void book::execute(order *order) {
   if (order->is_buy()) {
     execute_buy(order);
+    cout << "Executed buy" << endl;
+
   } else if (order->is_sell()) {
     execute_sell(order);
+    cout << "Executed sell" << endl;
   }
+
 }
 
 void book::execute_buy(order *buy_order) {
   // we can assert here that the order is buy sided
-  if (sell_queue->is_empty()) {
-    // no trades can occur, buy order becomes standing
-    buy_queue->add(*buy_order);
-    return;
+  while (buy_order->get_quantity() > 0) {
+    if (sell_queue->is_empty()) {
+      // no trades can occur, buy order becomes standing
+      buy_queue->add(*buy_order);
+      return;
+    }
+    order best_sell = sell_queue->peek();
+    // we have sell orders to trade with
+    if (buy_order->get_price() >= best_sell.get_price()) {
+
+      sell_queue->pop();
+      long quantity = buy_order->get_quantity();
+      best_sell.subtract_quantity(&quantity);
+
+      if (best_sell.get_quantity() != 0) {
+        sell_queue->add(best_sell);
+      }
+
+      if (quantity > 0) {
+        // update the remaining quantity of the buy order
+        buy_order->set_quantity(quantity);
+
+      } else {
+
+        break;
+      }
+    } else {
+      // No match, standing order is created
+      buy_queue->add(*buy_order);
+      break;
+    }
   }
 
-  // we have sell orders to trade with
-  order best_sell = sell_queue->peek();
-  sell_queue->pop();
-  long quantity = buy_order->get_quantity();
-  best_sell.subtract_quantity(&quantity);
-
-  if (best_sell.get_quantity() != 0) {
-    sell_queue->add(best_sell);
-  }
-
-  if (quantity > 0) {
-    // creating and push a standing order
-    buy_order->set_quantity(quantity);
-    execute_buy(buy_order);
-  }
 }
 
 void book::execute_sell(order *sell_order) {
   // we can assert here that the order is sell sided
-  if (buy_queue->is_empty()) {
-    // no trades can occur, sell order becomes standing
-    sell_queue->add(*sell_order);
-    return;
-  }
+  while (sell_order->get_quantity() > 0) {
+    if (buy_queue->is_empty()) {
+      // Standing order is created
+      sell_queue->add(*sell_order);
+      return;
+    }
 
-  // we have buy orders to trade with
-  order best_buy = buy_queue->peek();
-  buy_queue->pop();
-  long quantity = sell_order->get_quantity();
-  best_buy.subtract_quantity(&quantity);
+    // we have buy orders to trade with
+    order best_buy = buy_queue->peek();
 
-  if (best_buy.get_quantity() != 0) {
-    buy_queue->add(best_buy);
-  }
+    if (sell_order->get_price() <= best_buy.get_price()) {
+      buy_queue->pop();
+      long quantity = sell_order->get_quantity();
+      best_buy.subtract_quantity(&quantity);
 
-  if (quantity > 0) {
-    // creating and push a standing order
-    sell_order->set_quantity(quantity);
-    execute_sell(sell_order);
+      if (best_buy.get_quantity() != 0) {
+        buy_queue->add(best_buy);
+      }
+
+      if (quantity > 0) {
+        sell_order->set_quantity(quantity);
+      } else {
+        break;
+      }
+    } else {
+      // No match, standing sell order is created
+      sell_queue->add(*sell_order);
+      break;
+    }
+
   }
 }
 
