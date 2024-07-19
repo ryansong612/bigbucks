@@ -13,7 +13,7 @@ string getInput() {
   return input;
 }
 
-void processInput(const string& input, unordered_map<string, book*>& books) {
+void processInput(const string& input, unordered_map<string, book*>& books, long& orderIdCounter) {
 
     if (input == "exit") {
       return;
@@ -61,7 +61,7 @@ void processInput(const string& input, unordered_map<string, book*>& books) {
     // input should be split by space: SIDE PRICE QUANTITY
 
     side side = side_str == "buy" ? BUY : SELL;
-    auto order = new class order(side, price, quantity);
+    auto order = new class order(side, price, quantity, orderIdCounter++);
     cout << endl;
     books[equity]->execute(order);
     books[equity]->show();
@@ -69,7 +69,7 @@ void processInput(const string& input, unordered_map<string, book*>& books) {
 
 int main() {
   unordered_map<string, book*> books;
-
+  long orderId = 1;
 
   while (true) {
     string input = getInput();
@@ -78,7 +78,7 @@ int main() {
       break;
     }
   
-    processInput(input, books);
+    processInput(input, books, orderId);
   }
 
   for (auto& pair : books) {
