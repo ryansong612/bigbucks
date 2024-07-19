@@ -17,13 +17,14 @@ enum side {
 
 class order {
   public:
-    order(side side, double price, long quantity);
+    order(side side, double price, long quantity, long id);
     string stringify() const;
 
     side get_side() const { return side; }
     double get_price() const { return price; }
     long get_quantity() const { return quantity; }
     time_t get_timestamp() const { return timestamp; }
+    long get_id() const { return id; }
 
     bool is_buy() const { return side == BUY; }
     bool is_sell() const { return side == SELL; }
@@ -37,6 +38,7 @@ class order {
     double price;
     long quantity;
     time_t timestamp;
+    long id;
 };
 
 

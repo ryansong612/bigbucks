@@ -10,21 +10,19 @@
 #include <iostream>
 
 using namespace std;
-order::order(enum side side, double price, long quantity) {
+order::order(enum side side, double price, long quantity, long id) {
   this->side = side;
   this->price = price;
   this->quantity = quantity;
   this->timestamp = time(nullptr);
+  this->id = id;
 }
 
 string order::stringify() const {
   std::ostringstream stream;
   string side_str = is_buy() ? "BUY" : "SELL";
   stream << std::fixed << std::setprecision(2) << this->price;
-  return side_str
-    + " "
-    + to_string(this->quantity)
-    + " @ $" + stream.str();
+  return "Order ID: " + to_string(this->id) + " - " + side_str + " " + to_string(this->quantity) + " @ ₿" + stream.str();
 }
 
 void order::set_quantity(long q) {
