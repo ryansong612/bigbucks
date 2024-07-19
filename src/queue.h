@@ -1,5 +1,5 @@
 //
-// Created by Ryan Song on 04/07/2024.
+// Created by Ryan Song and Kushagra Srivastava
 //
 
 #ifndef BIGBUCKS_QUEUE_H

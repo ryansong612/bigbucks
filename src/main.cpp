@@ -19,12 +19,35 @@ void processInput(const string& input, unordered_map<string, book*>& books) {
       return;
     }
 
+    stringstream ss(input);
+    string command;
+    ss >> command;
+
+    if (command == "show") {
+      string equity;
+      ss >> equity;
+
+      if (ss.fail() || (!ss.eof() && ss.peek() != EOF)) {
+        cout << "Invalid command. Usage: show <equity> " << endl;
+        return;
+      }
+
+      if (books.find(equity) != books.end()) {
+        books[equity]->show();
+      } else {
+        cout << "No order books found for equity: " << equity << endl;
+      }
+      return;
+    }
+
     string side_str, equity;
     double price;
     long quantity;
 
-    stringstream ss(input);
+    ss.clear();
+    ss.str(input);
     ss >> side_str >> quantity >> price >> equity;
+
 
     if (ss.fail() || (!ss.eof() && ss.peek() != EOF)) {
       // Handle incorrect input format
@@ -39,7 +62,7 @@ void processInput(const string& input, unordered_map<string, book*>& books) {
 
     side side = side_str == "buy" ? BUY : SELL;
     auto order = new class order(side, price, quantity);
-    cout << order->stringify() << endl;
+    cout << endl;
     books[equity]->execute(order);
     books[equity]->show();
 }
