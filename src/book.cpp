@@ -18,11 +18,9 @@ book::book(string index) {
 void book::execute(order *order) {
   if (order->is_buy()) {
     execute_buy(order);
-    cout << "Executed buy" << endl;
 
   } else if (order->is_sell()) {
     execute_sell(order);
-    cout << "Executed sell" << endl;
   }
 
 }
@@ -102,9 +100,12 @@ void book::execute_sell(order *sell_order) {
 void book::show() {
   cout << "------------------------------------------------" << endl;
   cout << "Index: " << this->index << endl;
+  cout << endl;
   cout << "Buy Queue:" << endl;
   buy_queue->show();
+  cout << endl;
   cout << "Sell Queue:" << endl;
   sell_queue->show();
   cout << "------------------------------------------------" << endl;
+  cout << "\n" <<  endl;
 }
