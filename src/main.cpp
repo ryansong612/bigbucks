@@ -40,14 +40,33 @@ void processInput(const string& input, unordered_map<string, book*>& books, long
       return;
     }
 
-    string side_str, equity;
+    string side_str, equity, quantity_str, price_str;
     double price;
-    long quantity;
+    long long quantity;
 
     ss.clear();
     ss.str(input);
-    ss >> side_str >> quantity >> price >> equity;
+    ss >> side_str >> quantity_str >> price_str >> equity;
 
+    try {
+      quantity = stoll(quantity_str);
+    } catch (const invalid_argument&) {
+      std::cerr << "Invalid quantity format.\n";
+      return;
+    } catch (const out_of_range&) {
+      std::cerr << "Quantity out of range.\n";
+      return;
+    }
+
+    try {
+      price = stod(price_str);
+    } catch (const invalid_argument&) {
+      std::cerr << "Invalid price format.\n";
+      return;
+    } catch (const out_of_range&) {
+      std::cerr << "Price out of range.\n";
+      return;
+    }
 
     if (ss.fail() || (!ss.eof() && ss.peek() != EOF)) {
       // Handle incorrect input format
