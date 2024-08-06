@@ -54,7 +54,7 @@ void processInput(const string& input, unordered_map<string, book*>& books, long
       std::cerr << "Invalid quantity format.\n";
       return;
     } catch (const out_of_range&) {
-      std::cerr << "Quantity out of range.\n";
+      std::cerr << "Quantity must be less than 2^63.\n";
       return;
     }
 
@@ -64,7 +64,7 @@ void processInput(const string& input, unordered_map<string, book*>& books, long
       std::cerr << "Invalid price format.\n";
       return;
     } catch (const out_of_range&) {
-      std::cerr << "Price out of range.\n";
+      std::cerr << "Price must be less than 2^63.\n";
       return;
     }
 
